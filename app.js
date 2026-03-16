@@ -5,12 +5,12 @@ let currentUser = null;
 let rooms = [
   {
     id: 1,
-    name: "Meeting Room 2",
+    title: "Meeting Room 2",
     image: "meeting-room-2.jpg"
   },
   {
     id: 2,
-    name: "Meeting Room 3",
+    title: "Meeting Room 3",
     image: "meeting-room-3.jpg"
   }
 ];
