@@ -41,28 +41,14 @@
         .time-header { min-width: 52px; font-size: 0.65rem; color: #9ca3af; text-align: center; padding: 4px 0; border-left: 1px solid #f3f4f6; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 ">
+<body class="bg-gray-50 text-gray-900 overflow-hidden">
 
     <!-- Mobile Sidebar Overlay -->
     <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
 
-   <div class="flex min-h-screen">
-
-    <aside class="sidebar h-screen fixed left-0 top-0 w-64 flex flex-col">
-        <!-- เมนู -->
-    </aside>
-
-    <main class="flex-1 flex flex-col overflow-hidden">
-
-        <header>
-        </header>
-
-        <div id="content-area">
-        </div>
-
-    </main>
-
-</div>
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside id="main-sidebar" class="sidebar w-64 flex-shrink-0 flex flex-col text-white shadow-2xl">
             <div class="p-6">
                 <div class="flex items-center space-x-3 mb-10">
                     <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
@@ -135,7 +121,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 flex flex-col overflow-hidden ml-64">
+        <main class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
             <header class="h-14 md:h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 md:px-8 flex-shrink-0 shadow-sm">
                 <div class="flex items-center space-x-3">
