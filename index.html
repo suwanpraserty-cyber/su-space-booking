@@ -46,17 +46,23 @@
     <!-- Mobile Sidebar Overlay -->
     <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
 
-    <div class="flex min-h-screen">
-        
-       <aside class="sidebar">
-          ... เมนู ...
-       </aside>
+   <div class="flex min-h-screen">
 
-        <main class="flex-1 p-6">
-          <h1>Rooms</h1>
-          <div id="rooms-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-        </main>
-    </div>
+    <aside class="sidebar">
+        <!-- เมนู -->
+    </aside>
+
+    <main class="flex-1 flex flex-col overflow-hidden">
+
+        <header>
+        </header>
+
+        <div id="content-area">
+        </div>
+
+    </main>
+
+</div>
             <div class="p-6">
                 <div class="flex items-center space-x-3 mb-10">
                     <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
