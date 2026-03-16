@@ -1210,3 +1210,33 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('login-overlay').classList.remove('hidden');
     }
 });
+function renderRooms() {
+  const container = document.getElementById("content-area");
+
+  container.innerHTML = `
+    <div class="p-6">
+      <h1 class="text-2xl font-bold mb-6">ห้องประชุม</h1>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        ${rooms.map(room => `
+          <div class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
+
+            <img src="${room.image}" 
+                 class="w-full h-40 object-cover">
+
+            <div class="p-4">
+              <h3 class="text-lg font-bold">${room.title}</h3>
+
+              <button 
+                onclick="navigate('book')" 
+                class="mt-3 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                จองห้อง
+              </button>
+            </div>
+
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
