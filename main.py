@@ -1,10 +1,19 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from typing import List
 import models, schemas, database
 from database import engine, get_db, SessionLocal
 from datetime import datetime
+
+app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/")
+def home():
+    return FileResponse("index.html")
 
 # Drop and recreate all tables to handle schema changes
 models.Base.metadata.drop_all(bind=engine)
