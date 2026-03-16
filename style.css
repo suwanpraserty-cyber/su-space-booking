@@ -354,3 +354,7 @@ input:focus, textarea:focus, select:focus {
         box-shadow: none;
     }
 }
+.sidebar{
+  width: 260px;
+  min-width: 260px;
+}
