@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SU Space – ระบบจองห้องประชุม</title>
+    <meta name="description" content="SU Space - ระบบจองห้องประชุม Silpakorn University NT Tower">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        :root {
+            --brand: #41826e;
+            --brand-dark: #2e6254;
+            --brand-light: #e8f5f1;
+        }
+        .sidebar { background: linear-gradient(180deg, #2e6254 0%, #41826e 100%); }
+        .bg-brand { background-color: var(--brand); }
+        .text-brand { color: var(--brand); }
+        .border-brand { border-color: var(--brand); }
+        .ring-brand { --tw-ring-color: var(--brand); }
+        .focus\:ring-brand:focus { --tw-ring-color: var(--brand); }
+        .btn-brand { background-color: var(--brand); }
+        .btn-brand:hover { background-color: var(--brand-dark); }
+        .bg-brand-light { background-color: var(--brand-light); }
+        #login-overlay { background: rgba(15, 35, 30, 0.6); backdrop-filter: blur(12px); }
+
+        /* Timeline */
+        .timeline-grid { display: grid; overflow-x: auto; }
+        .timeline-slot { min-width: 52px; height: 40px; border-left: 1px solid #f0f0f0; transition: all 0.15s; }
+        .timeline-slot.free { background: #dcfce7; cursor: pointer; }
+        .timeline-slot.free:hover { background: #86efac; }
+        .timeline-slot.busy { background: #fee2e2; cursor: not-allowed; }
+        .timeline-slot.past { background: #f3f4f6; cursor: not-allowed; opacity: 0.6; }
+        .room-label { min-width: 140px; padding: 0 12px; display: flex; align-items: center; font-size: 0.8rem; font-weight: 600; color: #374151; }
+        .time-header { min-width: 52px; font-size: 0.65rem; color: #9ca3af; text-align: center; padding: 4px 0; border-left: 1px solid #f3f4f6; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 overflow-hidden">
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside id="main-sidebar" class="sidebar w-64 flex-shrink-0 flex flex-col text-white shadow-2xl">
+            <div class="p-6">
+                <div class="flex items-center space-x-3 mb-10">
+                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-calendar-check text-brand text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-black tracking-tight">SU Space</span>
+                        <p class="text-white/50 text-[10px] -mt-0.5 font-medium uppercase tracking-widest">NT Tower</p>
+                    </div>
+                    <!-- Mobile Close Button -->
+                    <button onclick="closeSidebar()" class="ml-auto lg:hidden text-white/70 hover:text-white p-1">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <nav class="space-y-1">
+                    <a href="#" onclick="navigate('dashboard'); closeSidebar();" class="nav-link flex items-center space-x-3 p-3 rounded-xl hover:bg-white/15 transition-all group" data-page="dashboard">
+                        <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                            <i class="fas fa-th-large text-sm"></i>
+                        </div>
+                        <span class="font-medium" data-i18n="home">Home</span>
+                    </a>
+                    <a href="#" onclick="navigate('rooms'); closeSidebar();" class="nav-link flex items-center space-x-3 p-3 rounded-xl hover:bg-white/15 transition-all group" data-page="rooms">
+                        <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                            <i class="fas fa-door-open text-sm"></i>
+                        </div>
+                        <span class="font-medium" data-i18n="rooms">Rooms</span>
+                    </a>
+
+                    <a href="#" onclick="navigate('book'); closeSidebar();" class="nav-link flex items-center space-x-3 p-3 rounded-xl hover:bg-white/15 transition-all group" data-page="book">
+                        <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                            <i class="fas fa-plus-circle text-sm"></i>
+                        </div>
+                        <span class="font-medium" data-i18n="book_room">Book Room</span>
+                    </a>
+                    <a href="#" onclick="navigate('bookings'); closeSidebar();" class="nav-link flex items-center space-x-3 p-3 rounded-xl hover:bg-white/15 transition-all group" data-page="bookings">
+                        <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                            <i class="fas fa-history text-sm"></i>
+                        </div>
+                        <span class="font-medium" data-i18n="my_bookings">My Bookings</span>
+                    </a>
+                    <a href="#" onclick="navigate('profile'); closeSidebar();" class="nav-link flex items-center space-x-3 p-3 rounded-xl hover:bg-white/15 transition-all group" data-page="profile">
+                        <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                            <i class="fas fa-user-circle text-sm"></i>
+                        </div>
+                        <span class="font-medium" data-i18n="profile">Profile</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="mt-auto p-4 space-y-3">
+                <!-- Language Toggle -->
+                <button onclick="toggleLanguage()" class="w-full flex items-center justify-center space-x-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-sm font-medium">
+                    <i class="fas fa-language"></i>
+                    <span id="lang-label">THA/EN</span>
+                </button>
+
+                <div class="flex items-center space-x-3 p-3 rounded-xl bg-black/20">
+                    <img id="sidebar-avatar" src="https://ui-avatars.com/api/?name=User&background=41826e&color=fff" class="w-10 h-10 rounded-full border-2 border-white/30 flex-shrink-0" alt="Avatar">
+                    <div class="flex-1 overflow-hidden">
+                        <p class="text-sm font-bold truncate" id="sidebar-name">Loading...</p>
+                        <p class="text-[10px] text-white/50 truncate" id="sidebar-role">Silpakorn University</p>
+                    </div>
+                </div>
+                <button onclick="signOut()" class="w-full flex items-center justify-center space-x-2 p-2 rounded-xl bg-red-500/20 hover:bg-red-500/40 transition-all text-sm font-medium">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span data-i18n="sign_out">Sign Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="h-14 md:h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 md:px-8 flex-shrink-0 shadow-sm">
+                <div class="flex items-center space-x-3">
+                    <!-- Hamburger Button (mobile only) -->
+                    <button id="hamburger-btn" onclick="toggleSidebar()" class="hamburger-btn lg:hidden -ml-1 p-2 rounded-xl hover:bg-gray-100 transition-all">
+                        <i class="fas fa-bars text-gray-600 text-lg"></i>
+                    </button>
+                    <h1 id="page-title" class="text-lg md:text-xl font-bold text-gray-800">Home</h1>
+                </div>
+                <div class="flex items-center space-x-2 md:space-x-4">
+                    <div class="text-xs md:text-sm text-gray-500 hidden sm:block" id="header-date"></div>
+                    <div class="h-6 w-px bg-gray-200 hidden sm:block"></div>
+                    <div id="header-user" class="flex items-center space-x-2">
+                        <img id="header-avatar" src="https://ui-avatars.com/api/?name=User&background=41826e&color=fff" class="w-8 h-8 rounded-full" alt="">
+                        <span class="text-sm font-semibold text-gray-700 hidden sm:block" id="header-name">User</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Container -->
+            <div id="content-area" class="flex-1 overflow-y-auto p-4 md:p-8">
+                <div id="loading-screen" class="flex items-center justify-center h-full">
+                    <div class="text-center">
+                        <div class="w-16 h-16 border-4 border-brand border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                        <p class="text-gray-400 text-sm">กำลังโหลด...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Login Overlay -->
+    <div id="login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-10 max-w-sm w-full text-center premium-shadow border border-gray-100 animate-fade-in">
+            <div class="w-16 h-16 bg-brand rounded-2xl flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-green-900/20">
+                <i class="fas fa-calendar-check text-2xl"></i>
+            </div>
+
+            <div id="login-form-container">
+                <h2 id="login-title" class="text-2xl font-black text-gray-800 mb-1">SU Space</h2>
+                <p class="text-sm text-gray-400 mb-6">ระบบจองห้องประชุม NT Tower</p>
+
+                <!-- Email/Password Form -->
+                <div class="space-y-3 mb-5">
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="email" id="login-email" placeholder="Email" class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all">
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="password" id="login-pass" placeholder="Password" class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand focus:border-transparent outline-none text-sm transition-all">
+                    </div>
+                    <button type="button" onclick="handleLogin('email')" id="login-btn" class="w-full py-3.5 bg-brand text-white font-bold rounded-xl hover:bg-brand/90 transition-all shadow-lg shadow-green-900/10">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        <span id="login-btn-text" data-i18n="login">Login</span>
+                    </button>
+                    <button type="button" onclick="loginAsGuest()" class="w-full py-3.5 bg-white text-brand border border-brand font-bold rounded-xl hover:bg-brand-light transition-all">
+                        <i class="fas fa-user-secret mr-2"></i>
+                        <span>Guest Access (No Login)</span>
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="flex-1 h-px bg-gray-200"></div>
+                    <span class="text-xs text-gray-400 font-medium">or</span>
+                    <div class="flex-1 h-px bg-gray-200"></div>
+                </div>
+
+                <div id="g_id_onload"
+                     data-client_id="965934976198-2n050q41sei5fp9c07gknammiu2l1fi5.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-ux_mode="popup"
+                     data-callback="handleGoogleCredentialResponse"
+                     data-auto_prompt="false">
+                </div>
+
+                <div class="g_id_signin flex justify-center w-full mb-5"
+                     data-type="standard"
+                     data-shape="rectangular"
+                     data-theme="outline"
+                     data-text="signin_with"
+                     data-size="large"
+                     data-logo_alignment="left"
+                     data-width="300">
+                </div>
+
+                <p id="auth-toggle" class="text-xs text-gray-500">
+                    <span data-i18n="no_account">Don't have an account?</span>
+                    <a href="#" onclick="toggleAuthMode()" class="text-brand font-bold hover:underline ml-1" data-i18n="sign_up">Sign Up</a>
+                </p>
+            </div>
+
+            <p class="text-[10px] text-gray-300 mt-8 uppercase font-bold tracking-widest">Silpakorn University</p>
+        </div>
+    </div>
+
+    <!-- Professional Notification Modal -->
+    <div id="notif-modal" class="modal-overlay">
+        <div class="modal-content overflow-hidden">
+            <div class="bg-brand p-8 text-white relative">
+                <div class="absolute right-6 top-6 opacity-20">
+                    <i class="fas fa-bell text-6xl"></i>
+                </div>
+                <h3 class="text-2xl font-black mb-1" data-i18n="confirm_needed">Confirmation Required</h3>
+                <p class="text-white/70 text-sm font-medium" data-i18n="confirm_before_deadline">Please confirm your booking at least 10 minutes before the start time.</p>
+            </div>
+            <div id="notif-modal-body" class="p-8 space-y-6">
+                <!-- Dynamic content will be injected here -->
+            </div>
+            <div class="px-8 pb-8 flex gap-3">
+                <button onclick="closeNotifModal()" class="flex-1 py-3.5 bg-gray-100 text-gray-500 font-bold rounded-xl hover:bg-gray-200 transition-all text-sm" data-i18n="cancel">Later</button>
+                <div id="notif-modal-action" class="flex-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
