@@ -4,12 +4,14 @@
 let currentUser = null;
 let rooms = [
   {
+    id: 1,
     name: "Meeting Room 2",
-    image: "room 2.jpg"
+    image: "meeting-room-2.jpg"
   },
   {
+    id: 2,
     name: "Meeting Room 3",
-    image: "room 3.jpg"
+    image: "meeting-room-3.jpg"
   }
 ];
 let currentPage = 'dashboard';
