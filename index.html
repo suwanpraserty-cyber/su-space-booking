@@ -41,21 +41,22 @@
         .time-header { min-width: 52px; font-size: 0.65rem; color: #9ca3af; text-align: center; padding: 4px 0; border-left: 1px solid #f3f4f6; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 overflow-hidden">
+<body class="bg-gray-50 text-gray-900 ">
 
     <!-- Mobile Sidebar Overlay -->
     <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
 
     <div class="flex min-h-screen">
         
-       <aside id="main-sidebar" class="sidebar ...">
-          ... เมนูทั้งหมด ...
+       <aside class="sidebar">
+          ... เมนู ...
        </aside>
 
         <main class="flex-1 p-6">
-        <h1>Rooms</h1>
-        <div id="rooms-container"></div>
+          <h1>Rooms</h1>
+          <div id="rooms-container"></div>
         </main>
+    </div>
             <div class="p-6">
                 <div class="flex items-center space-x-3 mb-10">
                     <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
