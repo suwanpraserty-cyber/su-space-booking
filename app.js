@@ -2,7 +2,16 @@
 //  SU Space – app.js
 // ──────────────────────────────────────────────
 let currentUser = null;
-let rooms = [];
+let rooms = [
+  {
+    name: "Meeting Room 2",
+    image: "meeting-room-2.jpg"
+  },
+  {
+    name: "Meeting Room 3",
+    image: "meeting-room-3.jpg"
+  }
+];
 let currentPage = 'dashboard';
 let currentLang = localStorage.getItem('lang') || 'th';
 let authMode = 'login';
