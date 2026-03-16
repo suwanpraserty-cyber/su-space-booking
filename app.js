@@ -70,7 +70,7 @@ const i18n = {
         find_room: "ดูห้องประชุม", new_booking: "จองห้องใหม่",
         search_placeholder: "ค้นหาห้อง...",
         all_locations: "ทุกสถานที่", floor1: "ชั้น 1", floor2: "ชั้น 2",
-        seats: "ที่นั่ง", book_this_room: "จองห้องนี้",
+        seats: "ที่นั่ง 9", book_this_room: "จองห้องนี้",
         meeting_room: "ห้องประชุม", date: "วันที่",
         start_time: "เวลาเริ่ม", end_time: "เวลาสิ้นสุด",
         purpose: "วัตถุประสงค์",
